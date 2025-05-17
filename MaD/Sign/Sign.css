@@ -1,0 +1,255 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root{
+    --primary-color: #f4f7fb;
+    --secondary-color: #f1f1f1;
+    --thirt-color: #635bff;
+    --text-color: #333;
+}
+body{
+    font-family: "Roboto", sans-serif;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.container{
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: auto;
+}
+
+@media (min-width: 576px) {
+    .container{
+        width:540px;
+    }
+ }
+@media (min-width: 768px) {
+    .container{
+        width:750px;
+    }
+}
+@media (min-width: 992px) {
+    .container{
+        width:970px;
+    }
+}
+@media (min-width: 1200px) {
+    .container{
+        width:1300px;
+    }
+}
+.Sign {
+    position: relative;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    height: 500px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 1rem;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.Sign:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    transform:scale(1.02);
+}
+.Sign .Sign_IN{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    color: var(--thirt-color);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    transform: translateX(-100%);
+    opacity: 0;
+
+}
+.Sign .Sign_IN.active{
+    transform: translateX(0);
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+    animation: Goout 0.5s forwards;
+}
+@keyframes Goout {
+    0%,50% {
+        transform: translate(-100%, -50%);
+        opacity: 0;
+    }
+    50%,100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+
+.Sign .Sign_IN h2{
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+.Sign .Sign_IN h2 i{
+    font-size: 2rem;
+    color: var(--thirt-color);
+    margin: 0;
+}
+.Sign .Sign_IN p{
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+.Sign .Sign_IN .inputBox{
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Sign .Sign_IN .inputBox label{
+    width: 30%;
+    color: var(--text-color);
+}
+.Sign .Sign_IN .inputBox input{
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    flex: 1;
+    caret-color: #635bff;
+}
+.Sign .Sign_IN .SignIn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--thirt-color);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.Sign .Sign_IN .SignIn:hover {
+    background-color: #635bff;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+.Sign .Sign_UP{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    color: var(--thirt-color);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    transform: translateX(100%);
+    opacity: 0;
+}
+.Sign .Sign_UP.active{
+    transform: translateX(0);
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+    animation: Goout 0.5s forwards;
+}
+@keyframes GoIn {
+    0%,50% {
+        transform: translate(100%, -50%);
+        opacity: 0;
+    }
+    50%,100% {
+        transform: translateX(0, -50%);
+        opacity: 1;
+    }
+}
+
+.Sign .Sign_UP h2{
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+.Sign .Sign_UP h2 i{
+    font-size: 2rem;
+    color: var(--thirt-color);
+    margin: 0;
+}
+.Sign .Sign_UP p{
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+.Sign .Sign_UP .inputBox{
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Sign .Sign_UP .inputBox label{
+    width: 30%;
+    color: var(--text-color);
+}
+.Sign .Sign_UP .inputBox input{
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    flex: 1;
+    caret-color: #635bff;
+}
+.Sign .Sign_UP .SignUp {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--thirt-color);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.Sign .Sign_UP .SignUp:hover {
+    background-color: #635bff;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+a{
+    text-decoration: underline;
+    color: black;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
