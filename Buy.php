@@ -20,13 +20,13 @@ $commandes_id = [];
 while ($row = mysqli_fetch_assoc($res)) {
     $commandes_id[] = $row['Num'];
 }
-$_SESSION['$id_user_de_commande']=$U_id;
-$_SESSION['$id_commandes_Buy']=$commandes_id;
+$_SESSION['$id_user_de_commande'] = $U_id;
+$_SESSION['$id_commandes_Buy'] = $commandes_id;
 
 // Loop through each commande
 foreach ($commandes_id as $commande_id) {
     $rq = "SELECT 
-                p.ImageURL, p.Designation, p.Reference, lc.Quantite, lc.PrixUnitaire,lc.NumCommande 
+                p.ImageURL, p.Designation, p.Reference, lc.Quantite, lc.PrixUnitaire, lc.NumCommande 
            FROM 
                 lignedecommande lc
            JOIN 
@@ -42,6 +42,17 @@ foreach ($commandes_id as $commande_id) {
     }
 }
 
+// Tax, shipping, promo logic
+$shipping = 20; // MAD
+$tax_rate = 0.15;
+$tax = $total_price * $tax_rate;
+$promo_discount = 0;
+
+if (isset($_POST['promo_code']) && $_POST['promo_code'] === 'KOL10') {
+    $promo_discount = 0.10 * $total_price;
+}
+
+$grand_total = $total_price + $shipping + $tax - $promo_discount;
 ?>
 
 <!DOCTYPE html>
@@ -57,6 +68,43 @@ foreach ($commandes_id as $commande_id) {
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"/>
+    <style>
+        .cart-side {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 350px;
+            margin: 0px auto;
+        }
+        .cart-side h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        .cart-side p {
+            margin: 10px 0;
+        }
+        .cart-side input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .cart-side button {
+            padding: 10px;
+            width: 100%;
+            background-color: #222;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .cart-box {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 <header class="header">
@@ -88,43 +136,62 @@ foreach ($commandes_id as $commande_id) {
                     </div>
                 </div>
             <?php endforeach; ?>
-            <div class="cart-summary">
-                <h3>Total: <span><?= $total_price ?> MAD</span></h3>
-                 <form action="confirm_order.php" method="POST">
+
+            <!-- Cart Summary Sidebar -->
+            <div class="cart-side">
+                <h3>Order Summary</h3>
+                <p>Subtotal: <strong><?= number_format($total_price, 2) ?> MAD</strong></p>
+                <p>Shipping: <strong><?= number_format($shipping, 2) ?> MAD</strong></p>
+                <p>Tax (15%): <strong><?= number_format($tax, 2) ?> MAD</strong></p>
+
+                <form method="POST">
+                    <label for="promo_code">Promo Code:</label>
+                    <input type="text" name="promo_code" id="promo_code" placeholder="Enter code (e.g. KOL10)" />
+                    <button type="submit">Apply</button>
+                </form>
+
+                <?php if ($promo_discount > 0): ?>
+                    <p>Promo Discount: <strong>-<?= number_format($promo_discount, 2) ?> MAD</strong></p>
+                <?php endif; ?>
+
+                <hr>
+                <p><strong>Total:</strong> <span><?= number_format($grand_total, 2) ?> MAD</span></p>
+
+                <form action="confirm_order.php" method="POST">
                     <button type="submit" class="checkout-btn">Proceed to Checkout</button>
-                 </form>
-</div>
+                </form>
+            </div>
+
         <?php else: ?>
             <p style="text-align:center;">Your cart is empty.</p>
         <?php endif; ?>
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="./imgs/KOlش.svg" alt="logo" class="logo-img">
-            </div>
-            <div class="footer-links">
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-socials">
-                <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="imgs/logo.svg" alt="logo" class="logo-img">
+                </div>
+                <div class="footer-links">
+                    <ul>
+                        <li><a href="./index.php">Home</a></li>
+                        <li><a href="./about.php">About</a></li>
+                        <li><a href="./contact.php">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-socials">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2025 KolXi. All rights reserved.</p>
-    </div>
-</footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 KolXi. All rights reserved.</p>
+        </div>
+    </footer>
 
 </body>
 </html>

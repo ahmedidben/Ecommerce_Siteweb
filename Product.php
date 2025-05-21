@@ -94,12 +94,12 @@ $Catg[] = "";
                 <i class="fa-solid fa-bars"></i>
             </div>
         </div>
-        <div class="navList">
+          <div class="navList">
             <ul class="list">
-                <li><a href="#">Categorie</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="./categories.php">Categorie</a></li>
+                <li><a href="./Product.php">Products</a></li>
+                <li><a href="./about.php">About</a></li>
+                <li><a href="./contact.php">Contact</a></li>
                 <li><a href="./MaD/Sign/SingUP_IN.php">Admin</a></li>
             </ul>
         </div>
@@ -191,8 +191,29 @@ $Catg[] = "";
 </div>
 
 <footer class="footer">
-    <!-- footer inchangé -->
-    <!-- ... -->
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="./imgs/KOlش.svg" alt="logo" class="logo-img">
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-socials">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 KolXi. All rights reserved.</p>
+    </div>
 </footer>
 
 <script src="script.js"></script>

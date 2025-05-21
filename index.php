@@ -84,18 +84,22 @@ if (isset($_POST['accept_cookies'])) {
                     <?php endif; ?>
 
                 </div>
-                <button type="submit" class="No_account_Now"><i class="fa-solid fa-user"></i></button>
-            </div>
+                <?php if(isset($_SESSION['user_id'])) : ?>
+                    <button onclick="window.location.href='./profile.php'" type="submit" class="No_account_Now"><i class="fa-solid fa-user"></i></button>
+                <?php else : ?>
+                    <button onclick="window.location.href='./MainSign/SingUP_IN.php'" type="submit" class="No_account_Now"><i class="fa-solid fa-user"></i></button>
+                <?php endif; ?>
+                </div>
             <div class="nav_l">
                 <i class="fa-solid fa-bars"></i>
             </div>
         </div>
         <div class="navList">
             <ul class="list">
-                <li><a href="#">Categorie</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="./categories.php">Categorie</a></li>
+                <li><a href="./Product.php">Products</a></li>
+                <li><a href="./about.php">About</a></li>
+                <li><a href="./contact.php">Contact</a></li>
                 <li><a href="./MaD/Sign/SingUP_IN.php">Admin</a></li>
             </ul>
         </div>
@@ -269,10 +273,9 @@ if (isset($_POST['accept_cookies'])) {
                 </div>
                 <div class="footer-links">
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="./index.php">Home</a></li>
+                        <li><a href="./about.php">About</a></li>
+                        <li><a href="./contact.php">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-socials">
@@ -303,3 +306,43 @@ if (isset($_POST['accept_cookies'])) {
 </body>
 
 </html>
+
+<?php
+if (isset($_SESSION['id_commandes_Buy']) && isset($_SESSION['id_user_de_commande'])) {
+    $cmds = $_SESSION['id_commandes_Buy'];
+    $user_id = $_SESSION['id_user_de_commande'];
+
+    foreach ($cmds as $cmd) {
+        // Update status to EN livrison if not already
+        $rqt = "UPDATE commande
+                SET Statut='EN livrision'
+                WHERE Num=$cmd AND IDClient=$user_id AND Statut='EN COURE'";
+        $rp = mysqli_query($conn, $rqt);
+        if (!$rp) {
+            echo "Erreur lors de la mise à jour de la commande ($cmd) à EN livrision.";
+        }
+
+        // Check if 3 days passed
+        $rqt1 = "SELECT DateCommande FROM commande WHERE Num=$cmd AND IDClient=$user_id";
+        $rp1 = mysqli_query($conn, $rqt1);
+        if ($rp1) {
+            while ($row = mysqli_fetch_assoc($rp1)) {
+                $date = new DateTime($row['DateCommande']);
+                $date->modify('+3 days');
+                $newDate = $date->format('Y-m-d');
+                $currentDate = date("Y-m-d");
+
+                if ($currentDate == $newDate) {
+                    $rqt2 = "UPDATE commande
+                             SET Statut='ARRIVÉE'
+                             WHERE Num=$cmd AND IDClient=$user_id";
+                    $rp2 = mysqli_query($conn, $rqt2);
+                    if (!$rp2) {
+                        echo "Erreur lors de la mise à jour de la commande ($cmd) à ARRIVÉE.";
+                    }
+                }
+            }
+        }
+    }
+}
+?>
